@@ -1,0 +1,13 @@
+GET http://localhost:5050/users
+
+####
+POST http://localhost:5050/newUser
+Content-Type: application/json
+
+{
+    "name": "Francesca",
+    "surname": "D'Anna",
+    "email": "francescadanna@gmail.com",
+    "password": "francescadanna",
+    "role": "user"
+}

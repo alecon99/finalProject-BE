@@ -1,0 +1,12 @@
+POST http://localhost:5050/newCart/64f88cce8055d5a8d36b9590 HTTP/1.1
+Content-Type: application/json
+
+{
+    "product": {
+        "id": "64eb50d731655d4743fff2fe",
+        "name": "Titolo prova 1",
+        "price": 20,
+        "img": "https://www.parafarmaciaconciapelli.it/wp-content/uploads/2021/08/Nasoterapia-Candela-Ambra-e-Legno-di-Sandalo_2.png"
+    },
+    "quantity": 3
+}

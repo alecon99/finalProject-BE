@@ -1,17 +1,26 @@
-GET http://localhost:5050/products
+GET http://localhost:5050/products?page=1&pageSize=5
 
 ####
 POST http://localhost:5050/newProduct
 Content-Type: application/json
 
 {
-    "name": "Titolo prova 3",
-    "description": "descrizione prova 2",
-    "images":{
-        "main": "immagineprincipale.jpg" ,
-        "optional": "immagineoptional.jpg"
-    },
+    "name": "Candela profumata alla cannella e vaniglia",
+    "description": "bbqcbbcuqzjxiphedjepziozPE EFRGTFWXv ndiiusinis suhusuud",
+    "image": "https://i.pinimg.com/564x/af/bd/23/afbd231a831c7a886d761d3e0509eeb5.jpg",
     "price": 20.5,
     "category":"candele",
     "availability": true
 }
+
+####
+GET http://localhost:5050/product/64ecea2431655d4743fff302
+
+
+
+
+
+
+
+
+

@@ -9,15 +9,9 @@ const ProductModelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    images:{
-        main:{
-            type: String,
-            required: true
-        },
-        optional:{
-            type: String,
-            required: false
-        }
+    image:{
+        type: String,
+        required: true
     },
     price:{
         type: Number,
