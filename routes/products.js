@@ -28,6 +28,27 @@ product.get('/products', async(req,res)=>{
     }
 });
 
+product.get('/allProducts', async(req,res)=>{
+
+    try {
+        const proucts = await ProductModel.find()
+
+        const counter = await ProductModel.count()
+
+        res.status(200).send({
+            statusCode: 200,
+            counter: counter,
+            products: proucts 
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Internal server error',
+            error
+        })
+    }
+});
+
 product.post('/newProduct', productBodyParams, validateProductBody, async(req,res)=>{
     
     const newProduct = new ProductModel({

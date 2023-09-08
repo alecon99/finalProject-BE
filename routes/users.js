@@ -26,6 +26,48 @@ user.get('/users', async(req,res)=>{
     }
 });
 
+user.get('/user/:userId', async(req,res)=>{
+
+    const {userId} = req.params;
+
+    try {
+        const userById = await UserModel.findById(userId)
+
+        res.status(200).send({
+            statusCode: 200,
+            userById
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }
+})
+
+user.get('/user/cart/:userId', async(req,res)=>{
+
+    const {userId} = req.params;
+
+    try {
+        const userById = await UserModel.findById(userId).populate("cart")
+
+        const cart = userById.cart
+
+        res.status(200).send({
+            statusCode: 200,
+            cart
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }
+})
+
 user.post('/user/registration', async(req,res)=>{
 
     const salt = await bcrypt.genSalt(10)

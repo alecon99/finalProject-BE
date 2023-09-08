@@ -11,3 +11,7 @@ Content-Type: application/json
     "password": "francescadanna",
     "role": "user"
 }
+
+####
+
+GET http://localhost:5050/user/cart/64f88cce8055d5a8d36b9590

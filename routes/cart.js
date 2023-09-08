@@ -40,4 +40,23 @@ cart.post('/newCart/:userId', async(req,res)=>{
     }
 } )
 
+cart.delete('/cart/deleteProduct/:productId', async(req,res)=>{
+    const { productId } = req.params;
+
+    try {
+        const deleteCartProduct= await CartModel.findByIdAndDelete(productId)
+
+        res.status(200).send({
+            statusCode: 200,
+            message: `Product with id ${productId} delete successfully`,
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error,
+        })
+    }
+})
+
 module.exports = cart;
