@@ -10,3 +10,7 @@ Content-Type: application/json
     },
     "quantity": 3
 }
+
+####
+
+DELETE http://localhost:5050/cart/deleteProduct/64fb60376a29b7fa48490f2f/64f88cce8055d5a8d36b9590

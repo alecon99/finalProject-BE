@@ -49,6 +49,48 @@ product.get('/allProducts', async(req,res)=>{
     }
 });
 
+/* product.get('product/allCategory', async(req,res)=>{
+
+    try {
+        const uniqueCategory = await ProductModel.aggregate([
+            {$unwind: 'category'},
+            {$group: {_id: 'category'}}
+        ])
+
+        const categoryList = uniqueCategory.map(c => c._id)
+
+        res.status(200).send({
+            statusCode: 200,
+            categoryList
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Internal server error',
+            error
+        })
+    }
+}); */
+
+product.get('/product/:productId', async(req,res)=>{
+    const {productId} = req.params;
+
+    try {
+        const productById= await ProductModel.findById(productId)
+
+        res.status(200).send({
+            statusCode: 200,
+            productById
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }
+})
+
 product.post('/newProduct', productBodyParams, validateProductBody, async(req,res)=>{
     
     const newProduct = new ProductModel({
@@ -77,15 +119,17 @@ product.post('/newProduct', productBodyParams, validateProductBody, async(req,re
     }
 });
 
-product.get('/product/:productId', async(req,res)=>{
+
+
+product.delete('/deleteProduct/:productId', async(req,res)=>{
     const {productId} = req.params;
 
     try {
-        const productById= await ProductModel.findById(productId)
+        const productById= await ProductModel.findByIdAndDelete(productId)
 
         res.status(200).send({
             statusCode: 200,
-            productById
+            message: `Product with id ${productId} delete successfully`
         })
     } catch (error) {
         res.status(500).send({

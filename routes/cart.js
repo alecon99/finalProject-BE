@@ -40,15 +40,21 @@ cart.post('/newCart/:userId', async(req,res)=>{
     }
 } )
 
-cart.delete('/cart/deleteProduct/:productId', async(req,res)=>{
-    const { productId } = req.params;
+cart.delete('/cart/deleteProduct/:cartId/:user', async(req,res)=>{
+    const { cartId, user } = req.params;
 
     try {
-        const deleteCartProduct= await CartModel.findByIdAndDelete(productId)
+        const deleteCartProduct= await CartModel.findByIdAndDelete(cartId)
 
+        const userToUpdate = await UserModel.findOneAndUpdate(
+            { _id: user },
+            { $pull: { cart: cartId }},
+            { new: true}
+        )
+           
         res.status(200).send({
             statusCode: 200,
-            message: `Product with id ${productId} delete successfully`,
+            message: `Product with id ${cartId} delete successfully`
         })
     } catch (error) {
         res.status(500).send({

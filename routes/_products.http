@@ -5,10 +5,10 @@ POST http://localhost:5050/newProduct
 Content-Type: application/json
 
 {
-    "name": "Candela profumata alla cannella e vaniglia",
-    "description": "bbqcbbcuqzjxiphedjepziozPE EFRGTFWXv ndiiusinis suhusuud",
-    "image": "https://i.pinimg.com/564x/af/bd/23/afbd231a831c7a886d761d3e0509eeb5.jpg",
-    "price": 20.5,
+    "name": "Candela profumata grande Norvegia",
+    "description": "Scopri l’estremo nord in tutte le sue sfaccettature: aurora boreale, ghiacciai e fiordi possenti. In un viaggio attraverso la terra del sole di mezzanotte, sperimenta l’intimo legame con la natura e vivi una felice semplicità – questa è la Norvegia.",
+    "image": "https://www.ava-may.it/cdn/shop/products/WS_MP_0_aa9a3736-b152-4dbc-bc2c-0328045f96fc.png?v=1679583484",
+    "price": 31.4,
     "category":"candele",
     "availability": true
 }
@@ -16,7 +16,8 @@ Content-Type: application/json
 ####
 GET http://localhost:5050/product/64ecea2431655d4743fff302
 
-
+####
+GET http://localhost:5050/product/allCategory
 
 
 
