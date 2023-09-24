@@ -122,6 +122,103 @@ user.post('/user/registration', async(req,res)=>{
     }
 });
 
+user.put('/user/modPassword/:userId', async(req,res)=>{
+    const { userId } = req.params
+
+    const userById = await UserModel.findById(userId)
+
+    const validPassword = await bcrypt.compare(req.body.oldPassword, userById.password)
+    
+    if(!validPassword){
+        return res.status(400).send({
+            statusCode: 400,
+            message: 'Invalid password'
+        })
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, salt)
+    
+    const newPassword = {
+        password: hashedPassword
+    }
+    
+    try {
+        const result = await UserModel.findByIdAndUpdate(
+            userId,
+            newPassword,
+            { new: true }
+        )
+        
+        res.status(201).send({
+            statusCode: 201,
+            message: `User with id ${userId} modify successfully`,
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Internal server error',
+            error
+        })
+    }
+});
+
+user.put('/user/modEmail/:userId', async(req,res)=>{
+    const { userId } = req.params
+
+    const newEmail = {
+        email: req.body.email
+    }
+    
+    try {
+        const result = await UserModel.findByIdAndUpdate(
+            userId,
+            newEmail,
+            { new: true }
+        )
+        
+        res.status(201).send({
+            statusCode: 201,
+            message: `User with id ${userId} modify successfully`,
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Internal server error',
+            error
+        })
+    }
+});
+
+user.put('/user/modPersonalData/:userId', async(req,res)=>{
+    const { userId } = req.params
+
+    const newPersonalData = {
+        name: req.body.name,
+        surname: req.body.surname,
+        phone: req.body.phone
+    }
+    
+    try {
+        const result = await UserModel.findByIdAndUpdate(
+            userId,
+            newPersonalData,
+            { new: true }
+        )
+        
+        res.status(201).send({
+            statusCode: 201,
+            message: `User with id ${userId} modify successfully`,
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Internal server error',
+            error
+        })
+    }
+});
+
 user.put('/user/newAddress/:userId', async(req,res)=>{
     const { userId } = req.params
 
