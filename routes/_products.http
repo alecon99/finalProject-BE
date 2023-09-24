@@ -19,6 +19,12 @@ GET http://localhost:5050/product/64ecea2431655d4743fff302
 ####
 GET http://localhost:5050/product/allCategory
 
+####
+PUT http://localhost:5050/modProduct/64f8a296ac17a16d35cc45e0
+
+{
+    "availability": true
+}
 
 
 

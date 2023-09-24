@@ -28,7 +28,7 @@ cart.post('/newCart/:userId', async(req,res)=>{
 
         res.status(201).send({
             statusCode: 201,
-            message: "Comment successfully created",
+            message: "Cart successfully created",
             updateCart
         })
     } catch (error) {
@@ -44,8 +44,6 @@ cart.delete('/cart/deleteProduct/:cartId/:user', async(req,res)=>{
     const { cartId, user } = req.params;
 
     try {
-        const deleteCartProduct= await CartModel.findByIdAndDelete(cartId)
-
         const userToUpdate = await UserModel.findOneAndUpdate(
             { _id: user },
             { $pull: { cart: cartId }},
@@ -55,6 +53,32 @@ cart.delete('/cart/deleteProduct/:cartId/:user', async(req,res)=>{
         res.status(200).send({
             statusCode: 200,
             message: `Product with id ${cartId} delete successfully`
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error,
+        })
+    }
+})
+
+cart.put('/cart/deleteAllProduct/:userId', async(req,res)=>{
+    const { userId } = req.params;
+
+    try {
+
+        const update = { $set: { cart: []}};
+
+        const updateCart = await UserModel.findOneAndUpdate(
+            { _id: userId},
+            update,
+            { new: true}
+        )
+
+        res.status(200).send({
+            statusCode: 200,
+            message: `Cart delete successfully`
         })
     } catch (error) {
         res.status(500).send({

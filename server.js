@@ -12,6 +12,7 @@ const productsRoute = require('./routes/products')
 const usersRoute = require('./routes/users')
 const loginRoute = require('./routes/login')
 const cartRoute = require('./routes/cart')
+const ordersRoute = require('./routes/orders')
 
 /* middleware */
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use('/', productsRoute)
 app.use('/', usersRoute)
 app.use('/', loginRoute)
 app.use('/', cartRoute)
+app.use('/', ordersRoute)
 
 mongoose.connect(process.env.MONGO_DB_URL);
 

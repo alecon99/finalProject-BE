@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ProductModel = require('../models/productModel');
 const { productBodyParams, validateProductBody } = require('../middlewares/productValidator');
+const multer = require('multer')
+const cloudinary = require('cloudinary').v2
+const { CloudinaryStorage } = require('multer-storage-cloudinary')
 
 const product = express.Router();
 
@@ -10,6 +13,7 @@ product.get('/products', async(req,res)=>{
     try {
         const proucts = await ProductModel.find()
         .limit(pageSize)
+        .sort({createdAt: -1})
 
         const counter = await ProductModel.count()
 
@@ -32,6 +36,7 @@ product.get('/allProducts', async(req,res)=>{
 
     try {
         const proucts = await ProductModel.find()
+        .sort({createdAt: -1})
 
         const counter = await ProductModel.count()
 
@@ -53,8 +58,8 @@ product.get('/allProducts', async(req,res)=>{
 
     try {
         const uniqueCategory = await ProductModel.aggregate([
-            {$unwind: 'category'},
-            {$group: {_id: 'category'}}
+            {$unwind: '$category'},
+            {$group: {_id: '$category'}}
         ])
 
         const categoryList = uniqueCategory.map(c => c._id)
@@ -91,6 +96,33 @@ product.get('/product/:productId', async(req,res)=>{
     }
 })
 
+cloudinary.config({
+	cloud_name: process.env.CLOURINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const cloudStorage = new CloudinaryStorage({
+	cloudinary: cloudinary,
+	params: {
+		folder: "productImage",
+		format: async (req, file) => "png",
+		public_id: (req, file) => file.name,
+	},
+});
+
+const cloudUpload = multer({ storage: cloudStorage });
+
+product.post("/image/cloudUploadImg",cloudUpload.single("image"), async (req, res) => {
+		try {
+			res.status(200).json({ image: req.file.path });
+		} catch (error) {
+			console.error("File upload failed:", error);
+			res.status(500).json({ error: "File upload failed" });
+		}
+	}
+);
+
 product.post('/newProduct', productBodyParams, validateProductBody, async(req,res)=>{
     
     const newProduct = new ProductModel({
@@ -119,13 +151,54 @@ product.post('/newProduct', productBodyParams, validateProductBody, async(req,re
     }
 });
 
+product.put('/modProduct/:poductId', async(req,res)=>{
+    const { poductId } = req.params
+
+    const productExist = await ProductModel.findById(poductId)
+
+    if(!productExist){
+        return res.status(404).send({
+            statusCode: 404,
+            message: `Product by id ${poductId} non found`
+        })
+    }
+
+    const modProduct = {
+        name: req.body.name,
+        description: req.body.description,
+        image: req.body.image,
+        price: req.body.price,
+        category: req.body.category,
+        availability: req.body.availability
+    }
+
+    try {
+        const result = await ProductModel.findByIdAndUpdate(
+            poductId,
+            modProduct,
+            { new: true }
+        )
+
+        res.status(200).send({
+            statusCode: 200,
+            message: `Product with id ${poductId} modify successfully`,
+            result
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }
+})
 
 
 product.delete('/deleteProduct/:productId', async(req,res)=>{
     const {productId} = req.params;
 
     try {
-        const productById= await ProductModel.findByIdAndDelete(productId)
+        const deleteProductById= await ProductModel.findByIdAndDelete(productId)
 
         res.status(200).send({
             statusCode: 200,

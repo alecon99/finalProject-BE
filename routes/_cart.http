@@ -14,3 +14,7 @@ Content-Type: application/json
 ####
 
 DELETE http://localhost:5050/cart/deleteProduct/64fb60376a29b7fa48490f2f/64f88cce8055d5a8d36b9590
+
+####
+
+PUT http://localhost:5050/cart/deleteAllProduct/650c38d1045af49fb36aefb9

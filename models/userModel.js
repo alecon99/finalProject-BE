@@ -18,6 +18,38 @@ const UserModelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    shippingAddress:{
+        address:{
+            type: String,
+            required: false
+        },
+        city:{
+            type: String,
+            required: false
+        },
+        state:{
+            type: String,
+            required: false
+        },
+        zipCode:{
+            type: Number,
+            required: false
+        },
+        country:{
+            type: String,
+            required: false
+        },
+    },
+    phone:{
+        prefix:{
+            type: Number,
+            required: false
+        },
+        number:{
+            type: Number,
+            required: false
+        },
+    },
     role:{
         type: String,
         enum: ["user","admin"],
@@ -28,6 +60,12 @@ const UserModelSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Cart"
+        },
+    ],
+    order:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Order"
         },
     ]
 }, { timestamps: true, strict: true});

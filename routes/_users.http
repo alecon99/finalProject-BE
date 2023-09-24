@@ -1,7 +1,7 @@
 GET http://localhost:5050/users
 
 ####
-POST http://localhost:5050/newUser
+POST http://localhost:5050/user/registration
 Content-Type: application/json
 
 {
@@ -9,6 +9,17 @@ Content-Type: application/json
     "surname": "D'Anna",
     "email": "francescadanna@gmail.com",
     "password": "francescadanna",
+    "shippingAddress":{
+        "address": "via della cavaccia 9b",
+        "city": "Uzzano",
+        "state": "Pistoia",
+        "zipCode": 51010,
+        "country": "Italia"
+    },
+    "phone": {
+        "prefix": 39,
+        "number": 3331313371
+    },
     "role": "user"
 }
 
