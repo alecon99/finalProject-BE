@@ -5,14 +5,18 @@ const OrderModelSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    cart:[{}],
+    cart:[{
+
+    }],
     state:{
         type: String,
         enum: ["processing","confirmed","shipped","completed","canceled"],
         default: "processing",
         required: true
     },
-    shippingAddress:{},
+    shippingAddress:{
+        
+    },
     paid:{
         total:{
             type: Number,

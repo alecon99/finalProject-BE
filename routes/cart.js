@@ -44,6 +44,9 @@ cart.delete('/cart/deleteProduct/:cartId/:user', async(req,res)=>{
     const { cartId, user } = req.params;
 
     try {
+
+        const deleteCartProduct= await CartModel.findByIdAndDelete(cartId)
+
         const userToUpdate = await UserModel.findOneAndUpdate(
             { _id: user },
             { $pull: { cart: cartId }},
@@ -68,9 +71,11 @@ cart.put('/cart/deleteAllProduct/:userId', async(req,res)=>{
 
     try {
 
+        const deleteCartProduct= await CartModel.deleteMany({ userId: userId })
+
         const update = { $set: { cart: []}};
 
-        const updateCart = await UserModel.findOneAndUpdate(
+        const userCartUpdate = await UserModel.findOneAndUpdate(
             { _id: userId},
             update,
             { new: true}

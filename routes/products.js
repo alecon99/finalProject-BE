@@ -13,7 +13,7 @@ product.get('/products', async(req,res)=>{
     try {
         const proucts = await ProductModel.find()
         .limit(pageSize)
-        .sort({createdAt: -1})
+        .sort({updatedAt: -1})
 
         const counter = await ProductModel.count()
 
@@ -54,29 +54,6 @@ product.get('/allProducts', async(req,res)=>{
     }
 });
 
-/* product.get('product/allCategory', async(req,res)=>{
-
-    try {
-        const uniqueCategory = await ProductModel.aggregate([
-            {$unwind: '$category'},
-            {$group: {_id: '$category'}}
-        ])
-
-        const categoryList = uniqueCategory.map(c => c._id)
-
-        res.status(200).send({
-            statusCode: 200,
-            categoryList
-        })
-    } catch (error) {
-        res.status(500).send({
-            statusCode: 500,
-            message: 'Internal server error',
-            error
-        })
-    }
-}); */
-
 product.get('/product/:productId', async(req,res)=>{
     const {productId} = req.params;
 
@@ -94,6 +71,32 @@ product.get('/product/:productId', async(req,res)=>{
             error
         })
     }
+})
+
+product.get('/filterProducts/:filter', async(req,res)=>{
+    const { filter } = req.params;
+
+    if(!filter){
+        return res.status(404).send({
+            statusCode: 404,
+            message: `Filter non found`
+        })
+    }
+    
+    try {
+        const findIsActive = await ProductModel.find({ "category": filter })
+
+        res.status(200).send({
+            statusCode: 200,
+            products: findIsActive
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }  
 })
 
 cloudinary.config({
