@@ -13,7 +13,7 @@ product.get('/products', async(req,res)=>{
     try {
         const proucts = await ProductModel.find()
         .limit(pageSize)
-        .sort({updatedAt: -1})
+        .sort({createdAt: -1})
 
         const counter = await ProductModel.count()
 

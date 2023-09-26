@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const UserModel = require('../models/userModel');
+const { userBodyParams, validateUserBody } = require('../middlewares/userValidator');
+
 const bcrypt = require('bcrypt')
 
 const user = express.Router();
@@ -90,7 +92,7 @@ user.get('/user/order/:userId', async(req,res)=>{
     }
 })
 
-user.post('/user/registration', async(req,res)=>{
+user.post('/user/registration',userBodyParams, validateUserBody, async(req,res)=>{
 
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
