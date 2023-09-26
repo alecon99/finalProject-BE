@@ -99,6 +99,34 @@ product.get('/filterProducts/:filter', async(req,res)=>{
     }  
 })
 
+product.get('/recomendedProducts/:filter', async(req,res)=>{
+    const { filter } = req.params;
+
+    if(!filter){
+        return res.status(404).send({
+            statusCode: 404,
+            message: `Filter non found`
+        })
+    }
+    
+    try {
+        const findIsActive = await ProductModel.find({ "category": filter })
+        .limit(6)
+        .sort({createdAt: -1})
+
+        res.status(200).send({
+            statusCode: 200,
+            products: findIsActive
+        })
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server error",
+            error
+        })
+    }  
+})
+
 cloudinary.config({
 	cloud_name: process.env.CLOURINARY_CLOUD_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
